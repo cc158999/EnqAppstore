@@ -284,7 +284,7 @@ CREATE TABLE `fa_category` (
 
 LOCK TABLES `fa_category` WRITE;
 /*!40000 ALTER TABLE `fa_category` DISABLE KEYS */;
-INSERT INTO `fa_category` VALUES (1,0,'default','全能签','1.0','0','https://pay.yhios.cn/uploads/20260424/43810b6c2a0e2fc30f7184f044391cdd.png','易能签官方版\\n测试换行效果测试换行效果！','','',1652257075,1652520168,2,'normal','https://enqapp.com/enq.ipa','','0','0','',NULL,0,NULL);
+INSERT INTO `fa_category` VALUES (1,0,'default','易能签','1.0','0','https://pay.yhios.cn/uploads/20260424/43810b6c2a0e2fc30f7184f044391cdd.png','易能签官方版\\n测试换行效果测试换行效果！','','',1652257075,1652520168,2,'normal','https://enqapp.com/enq.ipa','','0','0','',NULL,0,NULL);
 /*!40000 ALTER TABLE `fa_category` ENABLE KEYS */;
 UNLOCK TABLES;
 
