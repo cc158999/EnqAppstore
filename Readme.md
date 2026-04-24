@@ -16,7 +16,7 @@
 ### 易能签 (ESign) 内效果预览
 | 易能签·新闻模块 | 易能签·源商店 |
 | :---: | :---: |
-| <img src="screenshots/enq-news.jpg" width="300"> | <img src="screenshots/enq-appstore.jpg" width="300"> |
+| <img src="screenshots/enq-news.jpg" width="300"> | <img src="screenshots/new-enq-appstore.jpg" width="300"> |
 
 ---
 
