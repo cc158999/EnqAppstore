@@ -11,7 +11,7 @@
 ### Web 端适配预览
 | 移动端前端展示 | 移动端详情/交互 |
 | :---: | :---: |
-| <img src="screenshots/one.jpg" width="300"> | <img src="screenshots/new-two.jpg" width="300"> |
+| <img src="screenshots/new-one.jpg" width="300"> | <img src="screenshots/new-two.jpg" width="300"> |
 
 ### 易能签 (ESign) 内效果预览
 | 易能签·新闻模块 | 易能签·源商店 |

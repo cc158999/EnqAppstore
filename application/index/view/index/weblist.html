@@ -40,43 +40,43 @@
 
     <div class="fixed top-0 left-0 right-0 h-80 bg-gradient-to-b from-blue-50/50 to-transparent -z-10"></div>
 
-    <div class="max-w-3xl mx-auto px-4 pt-12 pb-24">
+    <div class="max-w-3xl mx-auto px-4 pt-6 pb-24">
         
-        <div class="relative bg-white rounded-[32px] shadow-[0_8px_40px_rgb(0,0,0,0.04)] border border-white/60 p-8 mb-8">
-            <div class="flex flex-col items-center text-center space-y-5">
-                <div class="relative">
-                    <img src="{$info.sourceicon}" alt="源图标" class="w-24 h-24 rounded-[22.5%] shadow-2xl z-10 relative border border-white">
-                    <div class="absolute inset-0 bg-blue-500 blur-3xl opacity-20 scale-125"></div>
+        <div class="relative bg-white/95 backdrop-blur-xl rounded-[28px] shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-white/80 p-5 mb-8">
+            
+            <div class="flex items-center gap-4">
+                <div class="relative flex-shrink-0">
+                    <img src="{$info.sourceicon}" alt="源图标" class="w-16 h-16 rounded-[22.5%] shadow-md z-10 relative border border-gray-50 object-cover">
+                    <div class="absolute inset-0 bg-blue-500 blur-xl opacity-20 scale-110"></div>
                 </div>
                 
-                <div class="space-y-1">
-                    <h1 class="text-3xl font-black tracking-tight text-gray-900">{$info.name|default='软件源'}</h1>
-                    <p class="text-gray-400 text-xs font-mono tracking-tight bg-gray-50 px-3 py-1 rounded-full">{$info.sourceURL}</p>
-                </div>
-
-                <div class="flex flex-col gap-3 w-full max-w-sm mt-2">
-                    <a href="enq-app://source/{$info.sourceURL}" class="tap-active w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-2xl font-bold shadow-lg shadow-blue-100 transition-all flex items-center justify-center space-x-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                        <span>添加到易能签</span>
-                    </a>
-
-                    <div class="flex gap-3">
-                        <button onclick="copySourceUrl(this, '{$info.sourceURL}')" class="tap-active flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-3.5 rounded-2xl font-bold transition-all flex items-center justify-center space-x-2">
-                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
-                            <span>复制地址</span>
-                        </button>
-
-                        {if $info.payURL}
-                        <a href="{$info.payURL}" target="_blank" class="tap-active flex-1 bg-zinc-900 hover:bg-black text-white py-3.5 rounded-2xl font-bold transition-all text-center flex items-center justify-center space-x-2">
-                            <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"></path></svg>
-                            <span>解锁</span>
-                        </a>
-                        {/if}
+                <div class="flex-1 min-w-0">
+                    <h1 class="text-xl sm:text-2xl font-black tracking-tight text-gray-900 truncate">{$info.name|default='软件源'}</h1>
+                    <div class="mt-1.5 flex items-center">
+                        <span class="text-gray-400 text-[11px] font-mono tracking-tight bg-gray-50 px-2 py-0.5 rounded-md truncate max-w-[90%]">{$info.sourceURL}</span>
                     </div>
                 </div>
             </div>
-        </div>
 
+            <div class="flex gap-2.5 mt-5">
+                <a href="enq-app://source/{$info.sourceURL}" class="tap-active flex-[1.5] bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-xl font-bold shadow-md shadow-blue-100 transition-all flex items-center justify-center space-x-1.5 text-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    <span>添加到易能签</span>
+                </a>
+
+                <button onclick="copySourceUrl(this, '{$info.sourceURL}')" class="tap-active flex-1 bg-[#F2F2F7] hover:bg-gray-200 text-gray-700 py-2.5 rounded-xl font-bold transition-all flex items-center justify-center space-x-1.5 text-sm">
+                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+                    <span>复制</span>
+                </button>
+
+                {if $info.payURL}
+                <a href="{$info.payURL}" target="_blank" class="tap-active flex-1 bg-zinc-900 hover:bg-black text-white py-2.5 rounded-xl font-bold transition-all text-center flex items-center justify-center space-x-1.5 text-sm">
+                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"></path></svg>
+                    <span>解锁</span>
+                </a>
+                {/if}
+            </div>
+        </div>
         {if $news}
         <div class="mb-10">
             <h2 class="text-xl font-bold px-2 mb-4">最新公告</h2>
@@ -158,7 +158,6 @@
     </div>
 
     <script>
-    // 1. 复制地址功能
     function copySourceUrl(btn, url) {
         const originalContent = btn.innerHTML;
         const el = document.createElement('textarea');
@@ -168,19 +167,18 @@
         document.execCommand('copy');
         document.body.removeChild(el);
 
-        btn.innerHTML = `<svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span class="text-green-600">已复制</span>`;
-        btn.classList.add('bg-green-50');
+        btn.innerHTML = `<svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span>已复制</span>`;
+        btn.classList.replace('text-gray-700', 'text-green-600');
 
         setTimeout(() => {
             btn.innerHTML = originalContent;
-            btn.classList.remove('bg-green-50');
+            btn.classList.replace('text-green-600', 'text-gray-700');
         }, 2000);
     }
 
-    // 2. 滚动监听 (控制回到顶部的显示与隐藏)
     const toolbar = document.getElementById('bottomToolbar');
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
+        if (window.scrollY > 150) {
             toolbar.classList.remove('translate-y-24', 'opacity-0', 'pointer-events-none');
             toolbar.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
         } else {
@@ -189,7 +187,6 @@
         }
     });
 
-    // 3. 分页加载逻辑 (由你之前提供的脚本优化而来)
     (function() {
         let currentPage = 1;
         let isLoading = false;
@@ -206,7 +203,7 @@
             const div = document.createElement('div');
             div.className = 'app-item tap-active group flex items-center p-4 bg-white rounded-[24px] shadow-sm border border-gray-50 transition-all';
             div.innerHTML = `
-                <img src="${app.iconURL}" class="app-icon flex-shrink-0">
+                <img src="${app.iconURL}" class="app-icon flex-shrink-0 object-cover">
                 <div class="flex-1 min-w-0 mx-4">
                     <div class="flex items-center gap-1.5">
                         <h3 class="font-bold text-[17px] text-gray-900 truncate">${app.name}</h3>
