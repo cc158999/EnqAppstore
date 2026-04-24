@@ -1,0 +1,23 @@
+body{font-size: 12px;}
+p{margin: 10px 0;}
+
+.h-banner img{width: 100%;margin: 0 auto;}
+.h-form{}
+.h-form .am-form input{background-color: rgba(255,255,255,0.4);border-radius: 3px;}
+.tips p{color: red;}
+
+
+.list li{overflow: hidden;padding: 5px 0;}
+.list li:first-child{border-top: none;}
+.list li:last-child{border-bottom: none;}
+.list .list-img img{max-width: 100%;}
+.list-info{padding-right: 0;}
+.list-info h3{margin: 0;font-size: 15px;}
+.list-info h3 span{background: red;color: #fff;border-radius: 5px;font-size: 12px;padding: 0 3px;}
+.list-info p{margin: 0;line-height: 20px;}
+.list-info p a{border: 1px solid #333;padding: 2px 5px;border-radius: 5px;color: #333}
+.list-btn{text-align: right;}
+.list-btn a{margin: 3px 0;}
+
+.download{display: none;position: fixed;top: 0;left: 0;background: rgba(0, 0, 0, 0.8);opacity: .9;width: 100%;height: 100%;z-index: 999;}
+.download>img{width: 100%;height: 100%;}

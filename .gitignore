@@ -1,0 +1,29 @@
+# Runtime
+/runtime/
+/public/uploads/
+/public/update/cache/
+
+# ThinkPHP
+/vendor/
+/extend/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.*
+
+# Database dumps
+*.sql
+!pay_yhios_cn.sql

@@ -1,0 +1,130 @@
+<style>
+    .profile-avatar-container {
+        position: relative;
+        width: 100px;
+        margin: 0 auto;
+    }
+
+    .profile-avatar-container .profile-user-img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .profile-avatar-container .profile-avatar-text {
+        display: none;
+    }
+
+    .profile-avatar-container:hover .profile-avatar-text {
+        display: block;
+        position: absolute;
+        height: 100px;
+        width: 100px;
+        background: #444;
+        opacity: .6;
+        color: #fff;
+        top: 0;
+        left: 0;
+        line-height: 100px;
+        text-align: center;
+    }
+
+    .profile-avatar-container button {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100px;
+        height: 100px;
+        opacity: 0;
+    }
+</style>
+<script  src="https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.js"></script>
+<script  src="https://lib.baomitu.com/layer/3.5.1/layer.js"></script>
+<div class="row animated fadeInRight">
+    <div class="col-md-12">
+        <div class="box box-success">
+            <div class="panel-heading">
+                接口配置
+            </div>
+            <div class="panel-body">
+
+                <form id="update-form" role="form" data-toggle="validator" method="POST" action="{:url('general.profile/update')}">
+                    {:token()}
+                    <input type="hidden" id="c-avatar" name="row[avatar]" value="{$admin.avatar|htmlentities}"/>
+                    <div class="box-body box-profile">
+                        <div class="form-group">
+                            
+                            
+            <p style="color:black;font-size:2.4em">&nbsp;&nbsp;&nbsp;&nbsp;专业的开发者证书托管平台</p>
+            <p style="color:red;font-size:1.2em">平台注册赠送永久 MAC 伪装权限！(额外增加100台设备名额)<br>支持：证书托管、证书代售、P12证书密码修改、证书权限在线开关、证书状态实时检测、等等功能！
+                            </p>                
+              <p style="color:black;font-size:2.4em">&nbsp;&nbsp;&nbsp;&nbsp;接口优势</p>              
+                            <p style="color:red;font-size:1.2em">
+                               高效文档与接口细化（ISP）
+拥有强大的接口开发文档，以便开发者快速上手开发自定义高效平台。并且将大型接口拆分为更小、更具体的接口，以便开发者只需调用它们所需的功能，而不需要依赖于不相关的功能，提高代码的可维护性和可扩展性。</p><br>
+
+ <p style="color:red;font-size:1.2em">适配当下主流第三方平台接口
+平台根据用户需求量快速开发适配当下主流平台接口，以便普通用户实现无缝衔接对接本平台，无需自主开发即可快速上手。</p>
+
+<p style="color:blue;font-size:1.2em"><br>无感迁移模式介绍：<br>
+配置完对应平台证书接口配置后只需要替换源码接口接口域名即可无感过渡，无需重新开发。<br>
+请求方式以及响应内容与对应平台原接口一致。（除少部分对应平台新增参数）<br>
+优先使用所有已配置无感迁移平台、直到对应平台无可用额度后才会使用本系统以实现无感迁移。
+                            </p>
+                        </div><br><br>
+                        <div class="form-inline" style="margin-top:10px">
+                            <label for="username" class="control-label">大陆接口①：</label>
+                            <input type="text" style="border-top:none;border-left:none;border-right:none;font-size:1.2em" class="form-control"  value="http://api-cer.dvffz8.cn" />&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a data-text="http://api-cer.dvffz8.cn" class="btn btn-danger fuzhi"> 复制</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a target="_blank" href="http://api-cer.dvffz8.cn" class="btn btn-success"> 前往</a>
+                        </div>
+                        <div class="form-inline" style="margin-top:10px">
+                            <label for="username" class="control-label">香港接口①：</label>
+                            <input type="text" style="border-top:none;border-left:none;border-right:none;font-size:1.2em" class="form-control"  value="http://api-cer.hk.dvffz8.cn" />&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a data-text="http://api-cer.hk.dvffz8.cn" class="btn btn-danger fuzhi"> 复制</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a target="_blank" href="http://api-cer.hk.dvffz8.cn" class="btn btn-success"> 前往</a>
+                        </div>
+                            <div class="form-inline" style="margin-top:10px">
+                            <label for="username" class="control-label">香港接口②：</label>
+                            <input type="text" style="border-top:none;border-left:none;border-right:none;font-size:1.2em" class="form-control"  value="http://103.151.217.207" />&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a data-text="http://103.151.217.207" class="btn btn-danger fuzhi"> 复制</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a target="_blank" href="http://103.151.217.207" class="btn btn-success"> 前往</a>
+                        </div>
+                        <div class="form-inline" style="margin-top:10px">
+                            <label for="username" class="control-label">美国接口①：</label>
+                            <input type="text" style="border-top:none;border-left:none;border-right:none;font-size:1.2em" class="form-control"  value="http://api-cer.us.dvffz8.cn" />&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a data-text="http://api-cer.us.dvffz8.cn" class="btn btn-danger fuzhi"> 复制</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a target="_blank" href="http://api-cer.us.dvffz8.cn" class="btn btn-success"> 前往</a>
+                        </div>
+                         <div class="form-inline" style="margin-top:10px">
+                            <label for="username" class="control-label">美国接口②：</label>
+                            <input type="text" style="border-top:none;border-left:none;border-right:none;font-size:1.2em" class="form-control"  value="http://api-panel.us.security.v-team.cn" />&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a data-text="http://api-panel.us.security.v-team.cn" class="btn btn-danger fuzhi"> 复制</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a target="_blank" href="http://api-panel.us.security.v-team.cn" class="btn btn-success"> 前往</a>
+                        </div>
+                        <div class="form-inline" style="margin-top:10px">
+                            <label for="username" class="ontrol-label">开发者文档：</label>
+                            <input type="text" style="border-top:none;border-left:none;border-right:none;font-size:1.2em" class="form-control"  value="http://api-cer.doc.dvffz8.cn" />&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a target="_blank" href="http://api-cer.doc.dvffz8.cn" class="btn btn-info"> 点击查看</a>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+     var clipboard = new ClipboardJS('.fuzhi', {
+        text: function(e) {
+            var text=$(e).attr('data-text');
+            return text;
+        }
+    });
+    clipboard.on('success', function(e) {
+        layer.msg('复制成功');
+    });
+    clipboard.on('error', function(e) {
+        layer.msg('复制失败');
+    });
+</script>

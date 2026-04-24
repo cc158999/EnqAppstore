@@ -1,0 +1,187 @@
+<?php
+
+namespace app\admin\controller;
+
+use app\common\controller\Backend;
+use app\common\model\Category as CategoryModel;
+use fast\Tree;
+use think\Db;
+
+/**
+ * 分类管理
+ *
+ * @icon   fa fa-list
+ * @remark 用于统一管理网站的所有分类,分类可进行无限级分类,分类类型请在常规管理->系统配置->字典配置中添加
+ */
+class Category extends Backend
+{
+
+    /**
+     * @var \app\common\model\Category
+     */
+    protected $model = null;
+    protected $categorylist = [];
+    protected $noNeedRight = ['selectpage'];
+
+    public function _initialize()
+    {
+        parent::_initialize();
+        $this->model = model('app\common\model\Category');
+
+        $tree = Tree::instance();
+        $tree->init(collection($this->model->order('weigh desc,id desc')->select())->toArray(), 'pid');
+        $this->categorylist = $tree->getTreeList($tree->getTreeArray(0), 'name');
+        $categorydata = [0 => ['type' => 'all', 'name' => __('None')]];
+        foreach ($this->categorylist as $k => $v) {
+            $categorydata[$v['id']] = $v;
+        }
+        $typeList = CategoryModel::getTypeList();
+        $this->view->assign("flagList", $this->model->getFlagList());
+        $this->view->assign("typeList", $typeList);
+        $this->view->assign("parentList", $categorydata);
+        $this->assignconfig('typeList', $typeList);
+    }
+
+    /**
+     * 查看
+     */
+    public function index()
+    {
+		$time = (int)date('d',time());
+		DB::name('category')->where('cstime','<>',$time)->update([
+			'cs' => 0,
+			'cstime' => $time
+		]);
+        //设置过滤方法
+        $this->request->filter(['strip_tags']);
+        if ($this->request->isAjax()) {
+            $search = $this->request->request("search");
+            $type = $this->request->request("type");
+
+            //构造父类select列表选项数据
+            $list = [];
+            foreach ($this->categorylist as $k => $v) {
+                if ($search) {
+                    if ($v['type'] == $type && stripos($v['name'], $search) !== false || stripos($v['nickname'], $search) !== false) {
+                        if ($type == "all" || $type == null) {
+                            $list = $this->categorylist;
+                        } else {
+                            $list[] = $v;
+                        }
+                    }
+                } else {
+                    if ($type == "all" || $type == null) {
+                        $list = $this->categorylist;
+                    } elseif ($v['type'] == $type) {
+                        $list[] = $v;
+                    }
+                }
+            }
+            foreach ($list as $k => $v){
+                 if($v['type'] == '1'){
+                     $list[$k]['type'] = '应用';
+                 }elseif($v['type'] == '2'){
+                     $list[$k]['type'] = '游戏';
+                 }elseif($v['type'] == '3'){
+                     $list[$k]['type'] = '影音';
+                 }elseif($v['type'] == '4'){
+                     $list[$k]['type'] = '工具';
+                 }elseif($v['type'] == '5'){
+                     $list[$k]['type'] = '插件';
+                 }
+            }
+            $total = count($list);
+            $result = array("total" => $total, "rows" => $list);
+
+            return json($result);
+        }
+        return $this->view->fetch();
+    }
+
+    /**
+     * 编辑
+     */
+    public function edit($ids = null)
+    {
+        $row = $this->model->get($ids);
+        if (!$row) {
+            $this->error(__('No Results were found'));
+        }
+        $adminIds = $this->getDataLimitAdminIds();
+        if (is_array($adminIds)) {
+            if (!in_array($row[$this->dataLimitField], $adminIds)) {
+                $this->error(__('You have no permission'));
+            }
+        }
+        if ($this->request->isPost()) {
+            $params = $this->request->post("row/a");
+            if ($params) {
+                $params = $this->preExcludeFields($params);
+                $modify = $params['modify'];
+                unset($params['modify']);
+                if ($params['pid'] != $row['pid']) {
+                    $childrenIds = Tree::instance()->init(collection(\app\common\model\Category::select())->toArray())->getChildrenIds($row['id'], true);
+                    if (in_array($params['pid'], $childrenIds)) {
+                        $this->error(__('Can not change the parent to child or itself'));
+                    }
+                }
+
+                try {
+                    //是否采用模型验证
+                    if ($this->modelValidate) {
+                        $name = str_replace("\\model\\", "\\validate\\", get_class($this->model));
+                        $validate = is_bool($this->modelValidate) ? ($this->modelSceneValidate ? $name . '.edit' : $name) : $this->modelValidate;
+                        $row->validate($validate);
+                    }
+                    $params['bt2a'] = $params['bt2a'] *1024*1024;
+                    //var_dump('<pre>',$ids);die;
+                    if($modify == '2'){
+                        $params['updatetime'] = time();
+                    }
+                    $result = Db::name('category')->where(['id'=>$ids])->update($params);
+                    //$result = $row->allowField(true)->save($params);
+                    if ($result !== false) {
+                        $this->success();
+                    } else {
+                        $this->error($row->getError());
+                    }
+                } catch (\think\exception\PDOException $e) {
+                    $this->error($e->getMessage());
+                } catch (\think\Exception $e) {
+                    $this->error($e->getMessage());
+                }
+            }
+            $this->error(__('Parameter %s can not be empty', ''));
+        }
+        if(!$row['bt2a']){
+            $row['bt2a'] = 0;
+        }
+        $row['bt2a'] = round($row['bt2a']/(1024*1024),2);
+        $this->view->assign("row", $row);
+        return $this->view->fetch();
+    }
+
+
+    /**
+     * Selectpage搜索
+     *
+     * @internal
+     */
+    public function selectpage()
+    {
+        return parent::selectpage();
+    }
+    public function add()
+    {
+        if ($this->request->isPost()) {
+            $params = $this->request->post("row/a");
+            if($params['bt2a']>0){
+                $params['bt2a'] = $params['bt2a']*1024*1024;
+            }
+            $category = new CategoryModel();
+            $category->allowField(true)->save($params);
+            $this->success();
+        }
+        return $this->view->fetch();
+    }
+}
