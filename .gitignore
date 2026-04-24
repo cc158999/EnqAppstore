@@ -23,7 +23,3 @@ Thumbs.db
 # Environment
 .env
 .env.*
-
-# Database dumps
-*.sql
-!pay_yhios_cn.sql
