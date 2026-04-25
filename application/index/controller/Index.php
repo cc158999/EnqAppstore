@@ -66,10 +66,19 @@ class Index extends Frontend
     public function getApps(){
         header('Content-Type: application/json;charset=utf-8');
         $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+        $type = isset($_GET['type']) ? $_GET['type'] : '';
         $pageSize = 20;
         $offset = ($page - 1) * $pageSize;
-        $totalApps = Db::table('fa_category')->where('status','normal')->count();
-        $apps = Db::table('fa_category')->where('status','normal')->order('weigh desc')->limit($offset, $pageSize)->select();
+        $query = Db::table('fa_category')->where('status','normal');
+        if ($type !== '' && $type !== 'all') {
+            $query = $query->where('type', $type);
+        }
+        $totalApps = $query->count();
+        $apps = Db::table('fa_category')->where('status','normal');
+        if ($type !== '' && $type !== 'all') {
+            $apps = $apps->where('type', $type);
+        }
+        $apps = $apps->order('weigh desc')->limit($offset, $pageSize)->select();
         $appList = [];
         foreach ($apps as $key=>$val) {
             if($val['type'] == 'default') $val['type'] = 0;
@@ -80,7 +89,7 @@ class Index extends Frontend
             $appList[$key]['localizedDescription'] = $val['keywords'];
             $appList[$key]['iconURL'] = $val['image'];
             $appList[$key]['tintColor'] = $val['bt1b'];
-            $appList[$key]['size'] = $val['bt2a'];
+            $appList[$key]['size'] = $val['bt2a'] > 0 ? round($val['bt2a'] / 1048576, 1) : 0;
             $appList[$key]['lock'] = $val['bt2b'];
         }
         $hasMore = ($offset + count($apps)) < $totalApps;
@@ -161,7 +170,7 @@ class Index extends Frontend
     	        $appList[$key]['localizedDescription'] = $val['keywords'];
     	        $appList[$key]['iconURL'] = $val['image'];
     	        $appList[$key]['tintColor'] = $val['bt1b'];
-    	        $appList[$key]['size'] = $val['bt2a'];
+    	        $appList[$key]['size'] = $val['bt2a'] > 0 ? round($val['bt2a'] / 1048576, 1) : 0;
     	        $appList[$key]['lock'] = $val['bt2b'];
     	    }
     	    $newsList = Db::table('fa_enqapp_news')->where('deletetime', null)->order('weigh desc,id desc')->select();
