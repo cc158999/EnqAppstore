@@ -265,50 +265,74 @@ value2|title2</textarea>
     </div>
 </div>
 <script>
+var currentVersion = '1.0.1';
 function sc(){
     window.open('https://control.v-team.cn/panel/login');
     return false;
 }
 function update(){
-     $.ajax({
+    layer.msg('正在检查更新...', {icon: 16, shade: 0.3, time: false});
+    $.ajax({
         type: 'POST',
-        url: 'general/config/update',
+        url: 'general/config/checkupdate',
         dataType: 'json',
-        success: function (str) {
-            if(str.code == 200){
-                layer.confirm(str.msg, {
-                  btn: ['确认更新', '取消更新'] //可以无限个按钮
-                }, function(index, layero){
-                    layer.msg('正在更新..', {
-                        icon: 16
-                        ,shade: 0.3
-                        ,time: false
-                    });
-                    $.ajax({
-                        type: 'POST',
-                        url: 'general/config/system_update',
-                        dataType: 'json',
-                        success: function (str) {
-                            if(str.code == 200){
-                                layer.alert(str.msg, { icon: 1, closeBtn: 0 }, function (index) { 
-                                	layer.closeAll();
-                                });
-                            }else{
-                                layer.alert(str.msg, { icon: 1, closeBtn: 0 }, function (index) { 
-                                	layer.closeAll();
-                                });
-                            }
+        success: function (res) {
+            layer.closeAll();
+            if(res.code == 1 && res.data){
+                var data = res.data;
+                var latestVersion = data.tag_name.replace(/^v/i, '');
+                var releaseUrl = data.html_url;
+                var releaseName = data.name || data.tag_name;
+                var releaseBody = data.body || '暂无更新说明';
+                var publishDate = data.published_at ? new Date(data.published_at).toLocaleDateString('zh-CN') : '-';
+
+                if(compareVersion(latestVersion, currentVersion) > 0){
+                    layer.confirm(
+                        '<div style="padding:10px 0;">' +
+                        '<p><b>发现新版本：</b>' + releaseName + '</p>' +
+                        '<p><b>当前版本：</b>v' + currentVersion + '</p>' +
+                        '<p><b>最新版本：</b>v' + latestVersion + '</p>' +
+                        '<p><b>发布时间：</b>' + publishDate + '</p>' +
+                        '<hr style="margin:10px 0;border-color:#eee;">' +
+                        '<p><b>更新说明：</b></p>' +
+                        '<div style="max-height:150px;overflow-y:auto;background:#f5f5f5;padding:10px;border-radius:4px;font-size:12px;white-space:pre-wrap;">' + releaseBody + '</div>' +
+                        '</div>',
+                        {
+                            title: '检查更新',
+                            btn: ['前往下载', '暂不更新'],
+                            area: ['450px', 'auto'],
+                            skin: 'layui-layer-prompt'
+                        },
+                        function(index){
+                            window.open(releaseUrl);
+                            layer.close(index);
                         }
-                    }); 
-                  //按钮【按钮一】的回调
-                }, function(index){
-                  //按钮【按钮二】的回调
-                });
+                    );
+                }else{
+                    layer.alert('当前已是最新版本 v' + currentVersion, {icon: 1, title: '检查更新'});
+                }
             }else{
-                layer.alert(str.msg)
+                layer.alert(res.msg || '获取版本信息失败', {icon: 2});
             }
+        },
+        error: function(){
+            layer.closeAll();
+            layer.alert('请求失败，请稍后重试', {icon: 2});
         }
-    }); 
+    });
+    return false;
 }
-    
+
+function compareVersion(v1, v2){
+    var arr1 = v1.split('.').map(Number);
+    var arr2 = v2.split('.').map(Number);
+    var len = Math.max(arr1.length, arr2.length);
+    for(var i = 0; i < len; i++){
+        var n1 = arr1[i] || 0;
+        var n2 = arr2[i] || 0;
+        if(n1 > n2) return 1;
+        if(n1 < n2) return -1;
+    }
+    return 0;
+}
 </script>

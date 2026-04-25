@@ -21,7 +21,7 @@ class Config extends Backend
      * @var \app\common\model\Config
      */
     protected $model = null;
-    protected $noNeedRight = ['check', 'rulelist'];
+    protected $noNeedRight = ['check', 'rulelist', 'checkupdate'];
 
     public function _initialize()
     {
@@ -234,6 +234,55 @@ class Config extends Backend
             }
         }
         return json(['list' => $list]);
+    }
+
+    /**
+     * 检查GitHub更新
+     * @internal
+     */
+    public function checkupdate()
+    {
+        $mirrors = [
+            'https://api.github.com/repos/cc158999/EnqAppstore/releases/latest',
+            'https://ghproxy.com/https://api.github.com/repos/cc158999/EnqAppstore/releases/latest',
+        ];
+
+        $result = null;
+        foreach ($mirrors as $mirror) {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $mirror);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'User-Agent: EnqAppstore-UpdateChecker'
+            ]);
+            $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+
+            if ($httpCode == 200 && $response) {
+                $result = json_decode($response, true);
+                if ($result && isset($result['tag_name'])) {
+                    break;
+                }
+            }
+        }
+
+        if ($result && isset($result['tag_name'])) {
+            return json([
+                'code' => 1,
+                'data' => [
+                    'tag_name' => $result['tag_name'],
+                    'name' => $result['name'] ?? $result['tag_name'],
+                    'body' => $result['body'] ?? '',
+                    'html_url' => $result['html_url'] ?? '',
+                    'published_at' => $result['published_at'] ?? ''
+                ]
+            ]);
+        } else {
+            return json(['code' => 0, 'msg' => '无法获取版本信息，请稍后重试']);
+        }
     }
 
     /**
